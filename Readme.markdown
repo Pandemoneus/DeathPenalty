@@ -27,7 +27,7 @@ BalanceCanBeNegative: [true, false] - determines whether the player's money can 
 FloorAfterSubtraction: [true, false] - determines whether the player's money should be floored (round down) after subtracting<br>
 ShowMsgOnDeath: [true, false] - determines whether a message is shown on the player's death<br>
 NotEnoughMoney: [message] - shows this message when a player dies but didn't have enough money<br>
-LostMoney: [message] - shows this message when a player dies and when he had enough money (Useable tags: <Money> = displays the money lost, <Currency> = displays the name of the currency, <Percentage> = displays the percentage as given in LosePercentage)
+LostMoney: [message] - shows this message when a player dies and when he had enough money (Useable tags: '<'Money'>' = displays the money lost, '<'Currency'>' = displays the name of the currency, '<'Percentage'>' = displays the percentage as given in LosePercentage, | do not forget to remove the '' !)
 
 Commands:
 -----------------
