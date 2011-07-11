@@ -55,10 +55,6 @@ public final class DPEntityListener extends EntityListener {
 						//make him lose a certain percentage of his money
 						double after = before - (before * percentage / 100.00);
 						
-						if (config.getFloorAfterSubtraction()) {
-							after = Math.floor(after);
-						}
-						
 						balance.set(after);
 					} else {
 						//make him lose a fixed amount of his money
@@ -73,8 +69,12 @@ public final class DPEntityListener extends EntityListener {
 						
 					}
 					
+					if (config.getFloorAfterSubtraction()) {
+						balance.set(Math.floor(balance.balance()));
+					}
+					
 					double dif = before - balance.balance();
-					msg = ChatColor.RED + DPConfig.replaceTag(config.getMsgLostMoney(), "Money", "" + dif);
+					msg = ChatColor.RED + replaceAllTags(dif);
 				} else {
 					// player does not have enough money
 					msg = ChatColor.GOLD + config.getMsgNotEnoughMoney();
@@ -86,5 +86,20 @@ public final class DPEntityListener extends EntityListener {
 				}
 			}
 		}
+	}
+	
+	private String replaceAllTags(double dif) {
+		DPConfig config = plugin.getConfig();
+		
+		// determine currency name
+		String five = iConomy.format(5.0);
+		String currency = five.substring(five.indexOf(" ") + 1);
+		
+		String tmp = config.getMsgLostMoney();
+		tmp = DPConfig.replaceTags(tmp, "Money", "" + dif);
+		tmp = DPConfig.replaceTags(tmp, "Percentage", "" + config.getPenalityMoneyInPercent());
+		tmp = DPConfig.replaceTags(tmp, "Currency", currency);
+		
+		return tmp;
 	}
 }

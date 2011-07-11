@@ -282,14 +282,67 @@ public final class DPConfig {
 			return "";
 		}
 		
-		String tmp = message.substring(message.indexOf("<") + 1, message.indexOf(">"));
+		String tmpMsg = message.toLowerCase();
+		String tmpTag = "<" + tag.toLowerCase() + ">";
 		
-		if (!tmp.equalsIgnoreCase(tag)) {
+		if (!(tmpMsg.contains(tmpTag))) {
 			return message;
 		}
 		
-		String result = message.substring(0, message.indexOf("<")) + replacement + message.substring(message.indexOf(">") + 1, message.length());
+		int start = tmpMsg.indexOf(tmpTag);
+		int end = tmpTag.length();
+			
+		String result = message.substring(0, start) + replacement + message.substring(start + end, message.length());
 		
 		return result;
+	}
+	
+	/**
+	 * Replaces all occurrences of the tag in the message.
+	 * @param message the message
+	 * @param tag the tag to replace
+	 * @param replacement the replacement string to replace all tags with
+	 * @return a string with all matching tags replaced
+	 */
+	public static String replaceTags(String message, String tag, String replacement) {
+		String tmp = new String(message);
+		
+		for (int i = 0; i < amountOfTagsContained(message, tag); i++) {
+			tmp = DPConfig.replaceTag(tmp, tag, replacement);
+		}
+		
+		return tmp;
+	}
+	
+	/**
+	 * Counts the amount of tags in a string.
+	 * 
+	 * @param message the string
+	 * @param tag the tag to check
+	 * @return the amount of tags in the string
+	 */
+	public static int amountOfTagsContained(String message, String tag) {
+		if (message == null || tag == null || tag.equals("")) {
+			return 0;
+		}
+		
+		String tmpMsg = message.toLowerCase();
+		String tmpTag = "<" + tag.toLowerCase() + ">";
+		boolean done = false;
+		int i = 0;
+		int counter = 0;
+		
+		while(!done) {
+			tmpMsg = tmpMsg.substring(i);
+			
+			if (tmpMsg.contains(tmpTag)) {
+				counter++;
+				i = tmpMsg.indexOf(tmpTag) + tmpTag.length();
+			} else {
+				done = true;
+			}
+		}
+		
+		return counter;
 	}
 }
