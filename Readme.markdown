@@ -2,6 +2,11 @@ DeathPenality plugin v1.00<br>
 by Pandemoneus<br>
 https://github.com/Pandemoneus
 
+Requirements:
+----------------
+- iConomy 5.0
+- Permissions 3.x (optional)
+
 How to install:
 ----------------
 1. Copy 'DeathPenality.jar' into your 'plugins/' folder.<br>
