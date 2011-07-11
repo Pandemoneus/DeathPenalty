@@ -49,18 +49,32 @@ public final class DPEntityListener extends EntityListener {
 				if (balance.hasEnough(config.getTargetMinMoney())) {
 					// player has enough money
 					double before = balance.balance();
-					double penalityMoney = config.getPenalityMoney();
-					balance.subtract(penalityMoney);
+					double percentage = config.getPenalityMoneyInPercent();
 					
-					if (!config.getBalanceCanBeNegative()) {
-						if (balance.isNegative()) {
-							balance.set(0.0);
+					if (before != 0.0 && percentage != 0.0 && percentage <= 100.0) {
+						//make him lose a certain percentage of his money
+						double after = before - (before * percentage / 100.00);
+						
+						if (config.getFloorAfterSubtraction()) {
+							after = Math.floor(after);
 						}
+						
+						balance.set(after);
+					} else {
+						//make him lose a fixed amount of his money
+						double penalityMoney = config.getPenalityMoney();
+						balance.subtract(penalityMoney);
+						
+						if (!config.getBalanceCanBeNegative()) {
+							if (balance.isNegative()) {
+								balance.set(0.0);
+							}
+						}
+						
 					}
 					
 					double dif = before - balance.balance();
 					msg = ChatColor.RED + DPConfig.replaceTag(config.getMsgLostMoney(), "Money", "" + dif);
-					
 				} else {
 					// player does not have enough money
 					msg = ChatColor.GOLD + config.getMsgNotEnoughMoney();

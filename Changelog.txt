@@ -1,2 +1,5 @@
+Version 1.01
+- Added percentage removal
+
 Version 1.00
 - Initial release

@@ -35,6 +35,8 @@ public final class DPConfig {
 	 */
 	private double targetMinMoney = 0.0;
 	private double penalityMoney = 0.0;
+	private double penalityMoneyInPercent = 0.0;
+	private boolean floorAfterSubtraction = false;
 	private boolean balanceCanBeNegative = false;
 	private boolean showMsgOnDeath = true;
 	private String msgNotEnoughMoney = "Lucky you! You didn't lose any money.";
@@ -96,6 +98,8 @@ public final class DPConfig {
 	private void loadData() {
 		penalityMoney = bukkitConfig.getDouble("Penality.Money", 0.0);
 		targetMinMoney = bukkitConfig.getDouble("Penality.TargetMinMoney", 0.0);
+		penalityMoneyInPercent = bukkitConfig.getDouble("Penality.LosePercentage", 0.0);
+		floorAfterSubtraction = bukkitConfig.getBoolean("Penality.FloorAfterSubtraction", false);
 		balanceCanBeNegative = bukkitConfig.getBoolean("Penality.BalanceCanBeNegative", false);
 		showMsgOnDeath = bukkitConfig.getBoolean("Penality.Messages.ShowMsgOnDeath", true);
 		msgNotEnoughMoney = bukkitConfig.getString("Penality.Messages.NotEnoughMoney", "Lucky you! You didn't lose any money.");
@@ -108,6 +112,8 @@ public final class DPConfig {
 		write("Version", pluginVersion);
 		write("Penality.Money", penalityMoney);
 		write("Penality.TargetMinMoney", targetMinMoney);
+		write("Penality.LosePercentage", penalityMoneyInPercent);
+		write("Penality.FloorAfterSubtraction", floorAfterSubtraction);
 		write("Penality.BalanceCanBeNegative", balanceCanBeNegative);
 		write("Penality.Messages.ShowMsgOnDeath", showMsgOnDeath);
 		write("Penality.Messages.NotEnoughMoney", msgNotEnoughMoney);
@@ -168,6 +174,24 @@ public final class DPConfig {
 	 */
 	public double getTargetMinMoney() {
 		return targetMinMoney;
+	}
+	
+	/**
+	 * Returns the percentage of the money that should be lost on death.
+	 * 
+	 * @return the percentage of the money that should be lost on death
+	 */
+	public double getPenalityMoneyInPercent() {
+		return penalityMoneyInPercent;
+	}
+	
+	/**
+	 * Returns whether the player's balance should be floored after the penality money was subtracted.
+	 * 
+	 * @return true if player's balance should be floored after subtracting, otherwise false
+	 */
+	public boolean getFloorAfterSubtraction() {
+		return floorAfterSubtraction;
 	}
 	
 	/**

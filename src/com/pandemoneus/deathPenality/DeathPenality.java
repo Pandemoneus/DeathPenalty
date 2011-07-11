@@ -19,8 +19,7 @@ import com.iConomy.*;
 /**
  * DeathPenality plugin.
  * 
- * Sends a message to all players with the permissions node
- * 'newchunknotifier.notifyme' or OPs when a new chunk is created.
+ * Deductes money from a player when he dies.
  * 
  * @author Pandemoneus
  * 
@@ -60,12 +59,7 @@ public class DeathPenality extends JavaPlugin {
 		
 		Log.info(PLUGIN_NAME + " v" + version + " enabled");
 		
-		setupIconomy();
-		
-		if (!getIConomyFound()) {
-			Log.severe(PLUGIN_NAME + " requires iConomy to work!");
-		}
-		
+		setupIconomy();	
 		setupPermissions();
 		
 		getCommand("deathpenality").setExecutor(cmdExecutor);
