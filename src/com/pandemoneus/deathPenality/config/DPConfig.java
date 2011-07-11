@@ -305,6 +305,10 @@ public final class DPConfig {
 	 * @return a string with all matching tags replaced
 	 */
 	public static String replaceTags(String message, String tag, String replacement) {
+		if (message == null || tag == null || tag.equals("") || replacement == null) {
+			return "";
+		}
+		
 		String tmp = new String(message);
 		
 		for (int i = 0; i < amountOfTagsContained(message, tag); i++) {
