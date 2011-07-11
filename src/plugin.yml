@@ -1,0 +1,14 @@
+name: DeathPenality
+main: com.pandemoneus.deathPenality.DeathPenality
+version: '1.00'
+author: 'Pandemoneus'
+
+commands:
+    deathpenality:
+        description: NewChunkNotifier
+        usage: |
+               /<command>
+    dp:
+        description: NewChunkNotifier
+        usage: |
+               /<command>
