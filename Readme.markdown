@@ -25,7 +25,7 @@ TargetMinMoney: [amount] - money a player must have at least to lose money at al
 BalanceCanBeNegative: [true, false] - determines whether the player's money can be negative after subtracting<br>
 ShowMsgOnDeath: [true, false] - determines whether a message is shown on the player's death<br>
 NotEnoughMoney: [message] - shows this message when a player dies but didn't have enough money<br>
-LostMoney: [message] - shows this message when a player dies and when he had enough money -- USE <Money> TO INSERT THE AMOUNT LOST
+LostMoney: [message] - shows this message when a player dies and when he had enough money -- USE <code><Money></code> TO INSERT THE AMOUNT LOST
 
 Commands:
 -----------------
