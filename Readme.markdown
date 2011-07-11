@@ -15,7 +15,7 @@ How to uninstall:
 
 Editable options:
 -----------------
-Money: [amount] - money to lose on death
+Money: [amount] - money to lose on death<br>
 TargetMinMoney: [amount] - money a player must have at least to lose money at all<br>
 BalanceCanBeNegative: [true, false] - determines whether the player's money can be negative after subtracting<br>
 ShowMsgOnDeath: [true, false] - determines whether a message is shown on the player's death<br>
