@@ -1,4 +1,6 @@
-package com.pandemoneus.deathPenality.listeners;
+package com.pandemoneus.deathPenalty.listeners;
+
+import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -8,17 +10,21 @@ import org.bukkit.event.entity.EntityListener;
 import com.iConomy.*;
 import com.iConomy.system.Account;
 import com.iConomy.system.Holdings;
-import com.pandemoneus.deathPenality.DeathPenality;
-import com.pandemoneus.deathPenality.config.DPConfig;
+import com.pandemoneus.deathPenalty.DeathPenalty;
+import com.pandemoneus.deathPenalty.config.DPConfig;
+import com.sk89q.worldedit.Vector;
+import com.sk89q.worldguard.LocalPlayer;
+import com.sk89q.worldguard.protection.managers.RegionManager;
 
 /**
- * Entity Listener for the DeathPenality plugin. Triggers on entity deaths.
+ * Entity Listener for the DeathPenalty plugin. Triggers on entity deaths.
  * 
  * @author Pandemoneus
  * 
  */
 public final class DPEntityListener extends EntityListener {
-	private DeathPenality plugin;
+	private DeathPenalty plugin;
+	private DPConfig config;
 	
 	/**
 	 * Associates this object with a plugin.
@@ -26,8 +32,9 @@ public final class DPEntityListener extends EntityListener {
 	 * @param plugin
 	 *            the plugin
 	 */
-	public DPEntityListener(DeathPenality plugin) {
+	public DPEntityListener(DeathPenalty plugin) {
 		this.plugin = plugin;
+		config = plugin.getConfig();
 	}
 	
 	/**
@@ -41,7 +48,21 @@ public final class DPEntityListener extends EntityListener {
 			if (event.getEntity() instanceof Player) {
 				Player player = (Player) event.getEntity();
 				String playerName = player.getName();
-				DPConfig config = plugin.getConfig();
+				
+				if (plugin.getWorldGuardFound()) {
+					if (config.getNoPenaltyInWorldGuardRegions()) {
+						LocalPlayer localPlayer = plugin.getWorldGuardPlugin().wrapPlayer(player);
+						Vector v = localPlayer.getPosition();
+						 
+						RegionManager regionManager = plugin.getWorldGuardPlugin().getRegionManager(player.getWorld());
+						List<String> list = regionManager.getApplicableRegionsIDs(v);
+						
+						if (!list.isEmpty()) {
+							return;
+						}
+					}
+				}
+				
 				Account account = iConomy.getAccount(playerName);
 				Holdings balance = account.getHoldings();
 				String msg = "";
@@ -49,7 +70,7 @@ public final class DPEntityListener extends EntityListener {
 				if (balance.hasEnough(config.getTargetMinMoney())) {
 					// player has enough money
 					double before = balance.balance();
-					double percentage = config.getPenalityMoneyInPercent();
+					double percentage = config.getPenaltyMoneyInPercent();
 					
 					if (before != 0.0 && percentage != 0.0 && percentage <= 100.0) {
 						//make him lose a certain percentage of his money
@@ -58,7 +79,7 @@ public final class DPEntityListener extends EntityListener {
 						balance.set(after);
 					} else {
 						//make him lose a fixed amount of his money
-						double penalityMoney = config.getPenalityMoney();
+						double penalityMoney = config.getPenaltyMoney();
 						balance.subtract(penalityMoney);
 						
 						if (!config.getBalanceCanBeNegative()) {
@@ -88,16 +109,15 @@ public final class DPEntityListener extends EntityListener {
 		}
 	}
 	
-	private String replaceAllTags(double dif) {
-		DPConfig config = plugin.getConfig();
-		
+	private String replaceAllTags(double dif) {		
 		// determine currency name
 		String five = iConomy.format(5.0);
 		String currency = five.substring(five.indexOf(" ") + 1);
 		
+		// replace tags one by one
 		String tmp = config.getMsgLostMoney();
 		tmp = DPConfig.replaceTags(tmp, "Money", "" + dif);
-		tmp = DPConfig.replaceTags(tmp, "Percentage", "" + config.getPenalityMoneyInPercent());
+		tmp = DPConfig.replaceTags(tmp, "Percentage", "" + config.getPenaltyMoneyInPercent());
 		tmp = DPConfig.replaceTags(tmp, "Currency", currency);
 		
 		return tmp;

@@ -1,4 +1,4 @@
-package com.pandemoneus.deathPenality;
+package com.pandemoneus.deathPenalty;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
@@ -10,21 +10,23 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
-import com.pandemoneus.deathPenality.commands.DPCommands;
-import com.pandemoneus.deathPenality.config.DPConfig;
-import com.pandemoneus.deathPenality.listeners.DPEntityListener;
-import com.pandemoneus.deathPenality.logger.Log;
+import com.pandemoneus.deathPenalty.commands.DPCommands;
+import com.pandemoneus.deathPenalty.config.DPConfig;
+import com.pandemoneus.deathPenalty.listeners.DPEntityListener;
+import com.pandemoneus.deathPenalty.logger.Log;
 import com.iConomy.*;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+
 
 /**
- * DeathPenality plugin.
+ * DeathPenalty plugin.
  * 
  * Deductes money from a player when he dies.
  * 
  * @author Pandemoneus
  * 
  */
-public class DeathPenality extends JavaPlugin {
+public class DeathPenalty extends JavaPlugin {
 	/**
 	 * Plugin related stuff
 	 */
@@ -37,9 +39,12 @@ public class DeathPenality extends JavaPlugin {
 	
 	public iConomy iConomy = null;
 	public boolean iConomyFound = false;
+	
+	private WorldGuardPlugin worldGuardPlugin = null;
+	private boolean worldGuardFound = false;
 
 	private static String version;
-	private static final String PLUGIN_NAME = "DeathPenality";
+	private static final String PLUGIN_NAME = "DeathPenalty";
 
 	/**
 	 * {@inheritDoc}
@@ -61,8 +66,9 @@ public class DeathPenality extends JavaPlugin {
 		
 		setupIconomy();	
 		setupPermissions();
+		setupWorldGuard();
 		
-		getCommand("deathpenality").setExecutor(cmdExecutor);
+		getCommand("deathpenalty").setExecutor(cmdExecutor);
 		getCommand("dp").setExecutor(cmdExecutor);
 		config.loadConfig();
 
@@ -114,6 +120,24 @@ public class DeathPenality extends JavaPlugin {
 	public boolean getIConomyFound() {
 		return iConomyFound;
 	}
+	
+	/**
+	 * Returns whether the WorldGuard plugin could be found.
+	 * 
+	 * @return true if WorldGuard plugin could be found, otherwise false
+	 */
+	public boolean getWorldGuardFound() {
+		return worldGuardFound;
+	}
+	
+	/**
+	 * Returns the WorldGuard plugin.
+	 * 
+	 * @return the WorldGuard plugin
+	 */
+	public WorldGuardPlugin getWorldGuardPlugin() {
+		return worldGuardPlugin;
+	}
 
 	/**
 	 * Returns the permissionsHandler of this plugin if it exists.
@@ -151,6 +175,21 @@ public class DeathPenality extends JavaPlugin {
 	private void setupIconomy() {
 		getServer().getPluginManager().registerEvent(Type.PLUGIN_ENABLE, new Server(this), Priority.Monitor, this);
         getServer().getPluginManager().registerEvent(Type.PLUGIN_DISABLE, new Server(this), Priority.Monitor, this);		
+	}
+	
+	private void setupWorldGuard() {
+		if (worldGuardPlugin != null) {
+			return;
+		}
+		
+		Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
+		
+		if (plugin == null) {
+			return;
+		}
+		
+		worldGuardFound = true;
+		worldGuardPlugin = (WorldGuardPlugin) plugin;
 	}
 	
 	/**

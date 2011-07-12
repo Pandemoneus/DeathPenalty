@@ -1,4 +1,4 @@
-package com.pandemoneus.deathPenality.config;
+package com.pandemoneus.deathPenalty.config;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,18 +6,18 @@ import java.io.IOException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.config.Configuration;
 
-import com.pandemoneus.deathPenality.DeathPenality;
-import com.pandemoneus.deathPenality.logger.Log;
+import com.pandemoneus.deathPenalty.DeathPenalty;
+import com.pandemoneus.deathPenalty.logger.Log;
 
 /**
- * The configuration file for the DeathPenality plugin, uses YML.
+ * The configuration file for the DeathPenalty plugin, uses YML.
  * 
  * @author Pandemoneus
  * 
  */
 public final class DPConfig {
 
-	private DeathPenality plugin;
+	private DeathPenalty plugin;
 	private static String pluginName;
 	private static String pluginVersion;
 
@@ -25,7 +25,7 @@ public final class DPConfig {
 	 * File handling
 	 */
 	private static String directory = "plugins" + File.separator
-			+ DeathPenality.getPluginName() + File.separator;
+			+ DeathPenalty.getPluginName() + File.separator;
 	private File configFile = new File(directory + File.separator
 			+ "config.yml");
 	private Configuration bukkitConfig = new Configuration(configFile);
@@ -34,13 +34,15 @@ public final class DPConfig {
 	 * Default settings
 	 */
 	private double targetMinMoney = 0.0;
-	private double penalityMoney = 0.0;
-	private double penalityMoneyInPercent = 0.0;
+	private double penaltyMoney = 0.0;
+	private double penaltyMoneyInPercent = 0.0;
 	private boolean floorAfterSubtraction = false;
 	private boolean balanceCanBeNegative = false;
+	private boolean noPenaltyInWorldGuardRegions = false;
 	private boolean showMsgOnDeath = true;
 	private String msgNotEnoughMoney = "Lucky you! You didn't lose any money.";
 	private String msgLostMoney = "You lost <Money>!";
+	
 
 	/**
 	 * Associates this object with a plugin
@@ -48,9 +50,9 @@ public final class DPConfig {
 	 * @param plugin
 	 *            the plugin
 	 */
-	public DPConfig(DeathPenality plugin) {
+	public DPConfig(DeathPenalty plugin) {
 		this.plugin = plugin;
-		pluginName = DeathPenality.getPluginName();
+		pluginName = DeathPenalty.getPluginName();
 	}
 
 	/**
@@ -60,7 +62,7 @@ public final class DPConfig {
 	 */
 	public boolean loadConfig() {
 		boolean isErrorFree = true;
-		pluginVersion = DeathPenality.getVersion();
+		pluginVersion = DeathPenalty.getVersion();
 
 		new File(directory).mkdir();
 
@@ -96,28 +98,30 @@ public final class DPConfig {
 	}
 
 	private void loadData() {
-		penalityMoney = bukkitConfig.getDouble("Penality.Money", 0.0);
-		targetMinMoney = bukkitConfig.getDouble("Penality.TargetMinMoney", 0.0);
-		penalityMoneyInPercent = bukkitConfig.getDouble("Penality.LosePercentage", 0.0);
-		floorAfterSubtraction = bukkitConfig.getBoolean("Penality.FloorAfterSubtraction", false);
-		balanceCanBeNegative = bukkitConfig.getBoolean("Penality.BalanceCanBeNegative", false);
-		showMsgOnDeath = bukkitConfig.getBoolean("Penality.Messages.ShowMsgOnDeath", true);
-		msgNotEnoughMoney = bukkitConfig.getString("Penality.Messages.NotEnoughMoney", "Lucky you! You didn't lose any money.");
-		msgLostMoney = bukkitConfig.getString("Penality.Messages.LostMoney", "You lost <Money>!");
+		penaltyMoney = bukkitConfig.getDouble("Penalty.Money", 0.0);
+		targetMinMoney = bukkitConfig.getDouble("Penalty.TargetMinMoney", 0.0);
+		penaltyMoneyInPercent = bukkitConfig.getDouble("Penalty.LosePercentage", 0.0);
+		floorAfterSubtraction = bukkitConfig.getBoolean("Penalty.FloorAfterSubtraction", false);
+		balanceCanBeNegative = bukkitConfig.getBoolean("Penalty.BalanceCanBeNegative", false);
+		noPenaltyInWorldGuardRegions = bukkitConfig.getBoolean("Penalty.WorldGuard.noPenaltyInWorldGuardRegions", false);
+		showMsgOnDeath = bukkitConfig.getBoolean("Penalty.Messages.ShowMsgOnDeath", true);
+		msgNotEnoughMoney = bukkitConfig.getString("Penalty.Messages.NotEnoughMoney", "Lucky you! You didn't lose any money.");
+		msgLostMoney = bukkitConfig.getString("Penalty.Messages.LostMoney", "You lost <Money> <Currency>!");
 	}
 
 	private void writeDefault() {
 		bukkitConfig
 				.setHeader("### Learn more about how this config can be edited and changed to your preference on the forum page. ###");
 		write("Version", pluginVersion);
-		write("Penality.Money", penalityMoney);
-		write("Penality.TargetMinMoney", targetMinMoney);
-		write("Penality.LosePercentage", penalityMoneyInPercent);
-		write("Penality.FloorAfterSubtraction", floorAfterSubtraction);
-		write("Penality.BalanceCanBeNegative", balanceCanBeNegative);
-		write("Penality.Messages.ShowMsgOnDeath", showMsgOnDeath);
-		write("Penality.Messages.NotEnoughMoney", msgNotEnoughMoney);
-		write("Penality.Messages.LostMoney", msgLostMoney);
+		write("Penalty.Money", penaltyMoney);
+		write("Penalty.TargetMinMoney", targetMinMoney);
+		write("Penalty.LosePercentage", penaltyMoneyInPercent);
+		write("Penalty.FloorAfterSubtraction", floorAfterSubtraction);
+		write("Penalty.BalanceCanBeNegative", balanceCanBeNegative);
+		write("Penalty.WorldGuard.noPenaltyInWorldGuardRegions", noPenaltyInWorldGuardRegions);
+		write("Penalty.Messages.ShowMsgOnDeath", showMsgOnDeath);
+		write("Penalty.Messages.NotEnoughMoney", msgNotEnoughMoney);
+		write("Penalty.Messages.LostMoney", msgLostMoney);
 
 		loadData();
 	}
@@ -163,8 +167,8 @@ public final class DPConfig {
 	 * 
 	 * @return the amount of money subtracted on death
 	 */
-	public double getPenalityMoney() {
-		return penalityMoney;
+	public double getPenaltyMoney() {
+		return penaltyMoney;
 	}
 	
 	/**
@@ -181,8 +185,8 @@ public final class DPConfig {
 	 * 
 	 * @return the percentage of the money that should be lost on death
 	 */
-	public double getPenalityMoneyInPercent() {
-		return penalityMoneyInPercent;
+	public double getPenaltyMoneyInPercent() {
+		return penaltyMoneyInPercent;
 	}
 	
 	/**
@@ -201,6 +205,15 @@ public final class DPConfig {
 	 */
 	public boolean getBalanceCanBeNegative() {
 		return balanceCanBeNegative;
+	}
+	
+	/**
+	 * Returns whether a player may receive death penalty when in a WorldGuard region.
+	 * 
+	 * @return true if a player may receive death penalty when in a WorldGuard region, other false
+	 */
+	public boolean getNoPenaltyInWorldGuardRegions() {
+		return noPenaltyInWorldGuardRegions;
 	}
 	
 	/**

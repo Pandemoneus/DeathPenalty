@@ -1,9 +1,9 @@
-package com.pandemoneus.deathPenality.logger;
+package com.pandemoneus.deathPenalty.logger;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.pandemoneus.deathPenality.DeathPenality;
+import com.pandemoneus.deathPenalty.DeathPenalty;
 
 /**
  * Server logger class
@@ -12,7 +12,7 @@ import com.pandemoneus.deathPenality.DeathPenality;
  * 
  */
 public final class Log {
-	private static String pre = "[" + DeathPenality.getPluginName() + "] ";
+	private static String pre = "[" + DeathPenalty.getPluginName() + "] ";
 	private static final Logger LOG = Logger.getLogger("Minecraft");
 
 	private Log() {

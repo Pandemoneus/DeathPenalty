@@ -1,4 +1,4 @@
-package com.pandemoneus.deathPenality;
+package com.pandemoneus.deathPenalty;
 
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
@@ -8,9 +8,9 @@ import org.bukkit.plugin.Plugin;
 import com.iConomy.iConomy;
 
 public class Server extends ServerListener {
-    private DeathPenality plugin;
+    private DeathPenalty plugin;
 
-    public Server(DeathPenality plugin) {
+    public Server(DeathPenalty plugin) {
         this.plugin = plugin;
     }
 

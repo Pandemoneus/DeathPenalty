@@ -1,14 +1,14 @@
-name: DeathPenality
-main: com.pandemoneus.deathPenality.DeathPenality
-version: '1.02'
+name: DeathPenalty
+main: com.pandemoneus.deathPenalty.DeathPenalty
+version: '1.03'
 author: 'Pandemoneus'
 
 commands:
-    deathpenality:
-        description: NewChunkNotifier
+    deathpenalty:
+        description: DeathPenalty
         usage: |
                /<command>
     dp:
-        description: NewChunkNotifier
+        description: DeathPenalty
         usage: |
                /<command>

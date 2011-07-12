@@ -1,7 +1,11 @@
+Version 1.03
+- Added WorldGuard support
+- You can now set whether penalties get applied in WorldGuard regions
+
 Version 1.02
 - Added more tags, <Percentage> and <Currency>.
 - Fixed bug causing an exception in replaceTag.
-- Added support for more than one occurence of a tag in a string.
+- Added support for more than one occurrence of a tag in a string.
 
 Version 1.01
 - Added percentage removal

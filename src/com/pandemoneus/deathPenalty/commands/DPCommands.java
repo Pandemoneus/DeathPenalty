@@ -1,4 +1,4 @@
-package com.pandemoneus.deathPenality.commands;
+package com.pandemoneus.deathPenalty.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -7,9 +7,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.nijiko.permissions.PermissionHandler;
-import com.pandemoneus.deathPenality.DeathPenality;
-import com.pandemoneus.deathPenality.config.DPConfig;
-import com.pandemoneus.deathPenality.logger.Log;
+import com.pandemoneus.deathPenalty.DeathPenalty;
+import com.pandemoneus.deathPenalty.config.DPConfig;
+import com.pandemoneus.deathPenalty.logger.Log;
 
 /**
  * Command class. Available commands are:
@@ -22,7 +22,7 @@ import com.pandemoneus.deathPenality.logger.Log;
  */
 public final class DPCommands implements CommandExecutor {
 
-	private DeathPenality plugin;
+	private DeathPenalty plugin;
 	private static String pluginName;
 
 	/**
@@ -31,9 +31,9 @@ public final class DPCommands implements CommandExecutor {
 	 * @param plugin
 	 *            the plugin
 	 */
-	public DPCommands(DeathPenality plugin) {
+	public DPCommands(DeathPenalty plugin) {
 		this.plugin = plugin;
-		pluginName = DeathPenality.getPluginName();
+		pluginName = DeathPenalty.getPluginName();
 	}
 
 	/**

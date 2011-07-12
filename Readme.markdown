@@ -1,4 +1,4 @@
-DeathPenality plugin v1.02<br>
+DeathPenality plugin v1.03<br>
 by Pandemoneus<br>
 https://github.com/Pandemoneus
 
@@ -25,6 +25,7 @@ TargetMinMoney: [amount] - money a player must have at least to lose money at al
 LosePercentage: [amount] - percentage of the money the player should lose when he dies -- NOTE: this will be used instead of "Money" if not 0.0<br>
 BalanceCanBeNegative: [true, false] - determines whether the player's money can be negative after subtracting<br>
 FloorAfterSubtraction: [true, false] - determines whether the player's money should be floored (round down) after subtracting<br>
+NoPenaltyInWorldGuardRegions: [true, false] - determines whether players receive penalty in guarded regions<br>
 ShowMsgOnDeath: [true, false] - determines whether a message is shown on the player's death<br>
 NotEnoughMoney: [message] - shows this message when a player dies but didn't have enough money<br>
 LostMoney: [message] - shows this message when a player dies and when he had enough money (Useable tags: '<'Money'>' = displays the money lost, '<'Currency'>' = displays the name of the currency, '<'Percentage'>' = displays the percentage as given in LosePercentage, | do not forget to remove the '' !)
