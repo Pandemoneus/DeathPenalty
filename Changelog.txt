@@ -1,4 +1,6 @@
 Version 1.03
+Note: Had a big typo in the plugin name. Make sure you reconfigure everything and delete the old plugin!
+
 - Added WorldGuard support
 - You can now set whether penalties get applied in WorldGuard regions
 
