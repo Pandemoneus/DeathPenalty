@@ -1,4 +1,4 @@
-DeathPenality plugin v1.03<br>
+DeathPenalty plugin v1.03<br>
 by Pandemoneus<br>
 https://github.com/Pandemoneus
 
@@ -9,14 +9,14 @@ Requirements:
 
 How to install:
 ----------------
-1. Copy 'DeathPenality.jar' into your 'plugins/' folder.<br>
+1. Copy 'DeathPenalty.jar' into your 'plugins/' folder.<br>
 2. Start your server to create a config file.<br>
-3. Edit the config file in 'plugins/DeathPenality/config.yml'.
+3. Edit the config file in 'plugins/DeathPenalty/config.yml'.
 
 How to uninstall:
 -----------------
-1. Delete 'DeathPenality.jar'.<br>
-2. Delete the folder 'plugins/DeathPenality'.
+1. Delete 'DeathPenalty.jar'.<br>
+2. Delete the folder 'plugins/DeathPenalty'.
 
 Editable options:
 -----------------
@@ -32,13 +32,13 @@ LostMoney: [message] - shows this message when a player dies and when he had eno
 
 Commands:
 -----------------
-deathpenality (alias: dp) - shows the ingame help<br>
-deathpenality reload (alias: dp reload) - reloads the plugin ingame<br>
-deathpenality info (alias: dp info) - shows the currently loaded config
+deathpenalty (alias: dp) - shows the ingame help<br>
+deathpenalty reload (alias: dp reload) - reloads the plugin ingame<br>
+deathpenalty info (alias: dp info) - shows the currently loaded config
 
 
 Permission nodes:
 -----------------
-deathpenality.help //makes the help command available<br>
-deathpenality.config.reload //makes the reload command available<br>
-deathpenality.config.info //makes the info command available
+deathpenalty.help //makes the help command available<br>
+deathpenalty.config.reload //makes the reload command available<br>
+deathpenalty.config.info //makes the info command available
