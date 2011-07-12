@@ -6,6 +6,7 @@ Requirements:
 ----------------
 - iConomy 5.0
 - Permissions 3.x (optional)
+- WorldGuard 5.2.3 (optional)
 
 How to install:
 ----------------
