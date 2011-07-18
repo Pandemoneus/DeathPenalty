@@ -25,7 +25,7 @@ Money: [amount] - money to lose on death<br>
 TargetMinMoney: [amount] - money a player must have at least to lose money at all<br>
 LosePercentage: [amount] - percentage of the money the player should lose when he dies -- NOTE: this will be used instead of "Money" if not 0.0<br>
 BalanceCanBeNegative: [true, false] - determines whether the player's money can be negative after subtracting<br>
-FloorAfterSubtraction: [true, false] - determines whether the player's money should be floored (round down) after subtracting<br>
+FloorAfterSubtraction: [true, false] - determines whether the player's money should be floored (round down) after subtracting (iConomy only)<br>
 NoPenaltyInWorldGuardRegions: [true, false] - determines whether players receive penalty in guarded regions<br>
 ShowMsgOnDeath: [true, false] - determines whether a message is shown on the player's death<br>
 NotEnoughMoney: [message] - shows this message when a player dies but didn't have enough money<br>
