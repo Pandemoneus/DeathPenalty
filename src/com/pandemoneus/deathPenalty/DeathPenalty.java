@@ -16,6 +16,7 @@ import com.pandemoneus.deathPenalty.listeners.DPEntityListener;
 import com.pandemoneus.deathPenalty.logger.Log;
 import com.iConomy.*;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import cosine.boseconomy.BOSEconomy;
 
 
 /**
@@ -39,6 +40,10 @@ public class DeathPenalty extends JavaPlugin {
 	
 	public iConomy iConomy = null;
 	public boolean iConomyFound = false;
+	
+	private BOSEconomy bosEconomy = null;
+	private boolean bosEconomyFound = false;
+	
 	
 	private WorldGuardPlugin worldGuardPlugin = null;
 	private boolean worldGuardFound = false;
@@ -67,6 +72,7 @@ public class DeathPenalty extends JavaPlugin {
 		setupIconomy();	
 		setupPermissions();
 		setupWorldGuard();
+		setupBOSEconomy();
 		
 		getCommand("deathpenalty").setExecutor(cmdExecutor);
 		getCommand("dp").setExecutor(cmdExecutor);
@@ -131,6 +137,15 @@ public class DeathPenalty extends JavaPlugin {
 	}
 	
 	/**
+	 * Returns whether the BOSEconomy plugin could be found.
+	 * 
+	 * @return true if BOSEconomy plugin could be found, otherwise false
+	 */
+	public boolean getBOSEconomyFound() {
+		return bosEconomyFound;
+	}
+	
+	/**
 	 * Returns the WorldGuard plugin.
 	 * 
 	 * @return the WorldGuard plugin
@@ -153,6 +168,15 @@ public class DeathPenalty extends JavaPlugin {
 		}
 
 		return ph;
+	}
+	
+	/**
+	 * Returns the BOSEconomy plugin.
+	 * 
+	 * @return the BOSEconomy plugin
+	 */
+	public BOSEconomy getBOSEconomyPlugin() {
+		return bosEconomy;
 	}
 
 	private void setupPermissions() {
@@ -190,6 +214,21 @@ public class DeathPenalty extends JavaPlugin {
 		
 		worldGuardFound = true;
 		worldGuardPlugin = (WorldGuardPlugin) plugin;
+	}
+	
+	private void setupBOSEconomy() {
+		if (bosEconomy != null) {
+			return;
+		}
+		
+		Plugin plugin = getServer().getPluginManager().getPlugin("BOSEconomy");
+		
+		if(plugin == null) {
+			return;
+		}
+			
+		bosEconomyFound = true;
+		bosEconomy = (BOSEconomy) plugin;
 	}
 	
 	/**

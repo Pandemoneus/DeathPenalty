@@ -1,10 +1,10 @@
-DeathPenalty plugin v1.03<br>
+DeathPenalty plugin v1.04<br>
 by Pandemoneus<br>
 https://github.com/Pandemoneus
 
 Requirements:
 ----------------
-- iConomy 5.0
+- iConomy 5.0 OR BOSEconomy 6.2
 - Permissions 3.x (optional)
 - WorldGuard 5.2.3 (optional)
 
@@ -40,6 +40,7 @@ deathpenalty info (alias: dp info) - shows the currently loaded config
 
 Permission nodes:
 -----------------
+deathpenalty.losemoney //players with this permission lose money on death<br>
 deathpenalty.help //makes the help command available<br>
 deathpenalty.config.reload //makes the reload command available<br>
 deathpenalty.config.info //makes the info command available

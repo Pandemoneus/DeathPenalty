@@ -1,6 +1,8 @@
-Version 1.03
-Note: Had a big typo in the plugin name. Make sure you reconfigure everything and delete the old plugin!
+Version 1.04
+- Added BOSEconomy support
+- Added Permission 'deathpenalty.losemoney' that makes only certain players lose money on death
 
+Version 1.03
 - Added WorldGuard support
 - You can now set whether penalties get applied in WorldGuard regions
 

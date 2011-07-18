@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="F:/Downloads/Plugins/bukkit-0.0.1-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="F:/Downloads/Plugins/Permissions.jar"/>
 	<classpathentry kind="lib" path="F:/Downloads/Plugins/WorldGuard.jar"/>
+	<classpathentry kind="lib" path="F:/Downloads/Plugins/BOSEconomy.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
