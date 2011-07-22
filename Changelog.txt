@@ -1,6 +1,9 @@
+Version 1.05
+- Added PVP reward (NOTE: This needs testing, I can't do that on my own)
+
 Version 1.04
 - Added BOSEconomy support
-- Added Permission 'deathpenalty.losemoney' that makes only certain players lose money on death
+- Added Permission that makes only certain players lose money on death
 
 Version 1.03
 - Added WorldGuard support

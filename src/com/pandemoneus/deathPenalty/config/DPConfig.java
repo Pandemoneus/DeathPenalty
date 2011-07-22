@@ -42,6 +42,7 @@ public final class DPConfig {
 	private boolean showMsgOnDeath = true;
 	private String msgNotEnoughMoney = "Lucky you! You didn't lose any money.";
 	private String msgLostMoney = "You lost <Money>!";
+	private boolean giveMoneyToKiller = false;
 	
 
 	/**
@@ -107,6 +108,7 @@ public final class DPConfig {
 		showMsgOnDeath = bukkitConfig.getBoolean("Penalty.Messages.ShowMsgOnDeath", true);
 		msgNotEnoughMoney = bukkitConfig.getString("Penalty.Messages.NotEnoughMoney", "Lucky you! You didn't lose any money.");
 		msgLostMoney = bukkitConfig.getString("Penalty.Messages.LostMoney", "You lost <Money> <Currency>!");
+		giveMoneyToKiller = bukkitConfig.getBoolean("Penalty.PVP.GiveMoneyToKiller", false);
 	}
 
 	private void writeDefault() {
@@ -122,6 +124,7 @@ public final class DPConfig {
 		write("Penalty.Messages.ShowMsgOnDeath", showMsgOnDeath);
 		write("Penalty.Messages.NotEnoughMoney", msgNotEnoughMoney);
 		write("Penalty.Messages.LostMoney", msgLostMoney);
+		write("Penalty.PVP.GiveMoneyToKiller", giveMoneyToKiller);
 
 		loadData();
 	}
@@ -241,6 +244,15 @@ public final class DPConfig {
 	 */
 	public String getMsgLostMoney() {
 		return msgLostMoney;
+	}
+	
+	/**
+	 * Returns whether the player who killed the triggering player should receive the money lost by the penalty.
+	 * 
+	 * @return true if the player who killed the triggering player should receive the money lost by the penalty, otherwise false
+	 */
+	public boolean getGiveMoneyToKiller() {
+		return giveMoneyToKiller;
 	}
 
 	/**

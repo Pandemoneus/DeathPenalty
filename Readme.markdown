@@ -1,4 +1,4 @@
-DeathPenalty plugin v1.04<br>
+DeathPenalty plugin v1.05<br>
 by Pandemoneus<br>
 https://github.com/Pandemoneus
 
@@ -29,7 +29,8 @@ FloorAfterSubtraction: [true, false] - determines whether the player's money sho
 NoPenaltyInWorldGuardRegions: [true, false] - determines whether players receive penalty in guarded regions<br>
 ShowMsgOnDeath: [true, false] - determines whether a message is shown on the player's death<br>
 NotEnoughMoney: [message] - shows this message when a player dies but didn't have enough money<br>
-LostMoney: [message] - shows this message when a player dies and when he had enough money (Useable tags: '<'Money'>' = displays the money lost, '<'Currency'>' = displays the name of the currency, '<'Percentage'>' = displays the percentage as given in LosePercentage, | do not forget to remove the '' !)
+LostMoney: [message] - shows this message when a player dies and when he had enough money (Useable tags: '<'Money'>' = displays the money lost, '<'Currency'>' = displays the name of the currency, '<'Percentage'>' = displays the percentage as given in LosePercentage, | do not forget to remove the '' !)<br>
+GiveMoneyToKiller: [true, false] - determines whether the player who killed the victim should receive the money lost by the victim
 
 Commands:
 -----------------

@@ -1,6 +1,6 @@
 name: DeathPenalty
 main: com.pandemoneus.deathPenalty.DeathPenalty
-version: '1.04'
+version: '1.05'
 author: 'Pandemoneus'
 
 commands:

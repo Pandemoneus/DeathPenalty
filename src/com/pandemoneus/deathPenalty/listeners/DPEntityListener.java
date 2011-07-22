@@ -3,6 +3,7 @@ package com.pandemoneus.deathPenalty.listeners;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
@@ -155,6 +156,16 @@ public final class DPEntityListener extends EntityListener {
 			}
 			
 			double dif = before - balance.balance();
+			
+			if (config.getGiveMoneyToKiller()) {
+				if (player.getLastDamageCause() != null) {
+					Entity ent = player.getLastDamageCause().getEntity();
+					if (ent instanceof Player) {
+						iConomy.getAccount(((Player) ent).getName()).getHoldings().add(dif);
+					}
+				}
+			}
+			
 			msg = ChatColor.RED + replaceAllTags(dif);
 		} else {
 			// player does not have enough money
@@ -202,6 +213,16 @@ public final class DPEntityListener extends EntityListener {
 			}
 			
 			double dif = before - bos.getPlayerMoney(playerName);
+			
+			if (config.getGiveMoneyToKiller()) {
+				if (player.getLastDamageCause() != null) {
+					Entity ent = player.getLastDamageCause().getEntity();
+					if (ent instanceof Player) {
+						bos.addPlayerMoney(((Player) ent).getName(), (int) dif, false);
+					}
+				}
+			}
+			
 			msg = ChatColor.RED + replaceAllTags(dif);
 		} else {
 			// player does not have enough money
