@@ -160,8 +160,15 @@ public final class DPEntityListener extends EntityListener {
 			if (config.getGiveMoneyToKiller()) {
 				if (player.getLastDamageCause() != null) {
 					Entity ent = player.getLastDamageCause().getEntity();
-					if (ent instanceof Player) {
-						iConomy.getAccount(((Player) ent).getName()).getHoldings().add(dif);
+					if (ent instanceof Player && !ent.equals(player)) {
+						Player p = (Player) ent;
+						// determine currency name
+						String currency = "";
+						String five = iConomy.format(5.0);
+						currency = five.substring(five.indexOf(" ") + 1);
+							
+						iConomy.getAccount(p.getName()).getHoldings().add(dif);
+						p.sendMessage(ChatColor.GREEN + "You killed " + playerName + " and received " + dif + " " + currency);
 					}
 				}
 			}
@@ -217,8 +224,10 @@ public final class DPEntityListener extends EntityListener {
 			if (config.getGiveMoneyToKiller()) {
 				if (player.getLastDamageCause() != null) {
 					Entity ent = player.getLastDamageCause().getEntity();
-					if (ent instanceof Player) {
-						bos.addPlayerMoney(((Player) ent).getName(), (int) dif, false);
+					if (ent instanceof Player && !ent.equals(player)) {
+						Player p = (Player) ent;
+						bos.addPlayerMoney(p.getName(), (int) dif, false);
+						p.sendMessage(ChatColor.GREEN + "You killed " + playerName + " and received " + dif + " " + bos.getMoneyNamePlural());
 					}
 				}
 			}

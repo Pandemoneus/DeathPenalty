@@ -1,5 +1,8 @@
+Version 1.051
+- Added message for killer that he received money
+
 Version 1.05
-- Added PVP reward (NOTE: This needs testing, I can't do that on my own)
+- Added PVP reward
 
 Version 1.04
 - Added BOSEconomy support
