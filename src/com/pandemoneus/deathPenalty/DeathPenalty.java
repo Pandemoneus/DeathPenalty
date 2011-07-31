@@ -10,10 +10,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
-import com.pandemoneus.deathPenalty.commands.DPCommands;
-import com.pandemoneus.deathPenalty.config.DPConfig;
-import com.pandemoneus.deathPenalty.listeners.DPEntityListener;
-import com.pandemoneus.deathPenalty.logger.Log;
 import com.iConomy.*;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import cosine.boseconomy.BOSEconomy;
@@ -80,7 +76,7 @@ public class DeathPenalty extends JavaPlugin {
 
 		PluginManager pm = getServer().getPluginManager();
 
-		pm.registerEvent(Event.Type.ENTITY_DEATH, entityListener, Priority.Highest, this);
+		pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Priority.Highest, this);
 	}
 
 	/**

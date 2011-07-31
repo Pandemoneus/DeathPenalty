@@ -1,9 +1,8 @@
-package com.pandemoneus.deathPenalty.logger;
+package com.pandemoneus.deathPenalty;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.pandemoneus.deathPenalty.DeathPenalty;
 
 /**
  * Server logger class

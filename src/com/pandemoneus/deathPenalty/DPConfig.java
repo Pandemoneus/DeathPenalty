@@ -1,4 +1,4 @@
-package com.pandemoneus.deathPenalty.config;
+package com.pandemoneus.deathPenalty;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,8 +6,6 @@ import java.io.IOException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.config.Configuration;
 
-import com.pandemoneus.deathPenalty.DeathPenalty;
-import com.pandemoneus.deathPenalty.logger.Log;
 
 /**
  * The configuration file for the DeathPenalty plugin, uses YML.

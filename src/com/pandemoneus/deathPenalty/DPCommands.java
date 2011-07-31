@@ -1,4 +1,4 @@
-package com.pandemoneus.deathPenalty.commands;
+package com.pandemoneus.deathPenalty;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -7,9 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.nijiko.permissions.PermissionHandler;
-import com.pandemoneus.deathPenalty.DeathPenalty;
-import com.pandemoneus.deathPenalty.config.DPConfig;
-import com.pandemoneus.deathPenalty.logger.Log;
 
 /**
  * Command class. Available commands are:
