@@ -1,12 +1,13 @@
 package com.pandemoneus.deathPenalty;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
 
 import com.iConomy.*;
@@ -29,12 +30,20 @@ public final class DPEntityListener extends EntityListener {
 	private DeathPenalty plugin;
 	private static String pluginName;
 	private DPConfig config;
-	
+
 	private boolean oneTimeCheck = false;
 	private boolean iConomyFound = false;
 	private boolean bosEconomyFound = false;
 	private boolean worldGuardFound = false;
 	private boolean permissionsFound = false;
+	
+	// HashMaps used to determine who killed a player and when
+	private HashMap<Player, Long> recentlyAttackedPlayers = new HashMap<Player, Long>();
+	private HashMap<Player, Boolean> lastAttackByOtherPlayer = new HashMap<Player, Boolean>();
+	private HashMap<Player, Player> lastAttacker = new HashMap<Player, Player>();
+	
+	// maximum delay between a recorded player damage and this player's death
+	private final static long MAX_DELAY = 3000;
 	
 	/**
 	 * Associates this object with a plugin.
@@ -54,7 +63,7 @@ public final class DPEntityListener extends EntityListener {
 	 * @param event
 	 *            event information passed by Bukkit
 	 */
-	public void onEntityDamage(EntityDamageEvent event) {
+	public void onEntityDeath(EntityDeathEvent event) {
 		if (!oneTimeCheck) {
 			iConomyFound = plugin.getIConomyFound();
 			bosEconomyFound = plugin.getBOSEconomyFound();
@@ -64,17 +73,15 @@ public final class DPEntityListener extends EntityListener {
 			oneTimeCheck = true;
 		}
 		
-		if (event != null && !event.isCancelled() && (event instanceof EntityDamageByEntityEvent) && (iConomyFound || bosEconomyFound)) {
+		if (event != null && (iConomyFound || bosEconomyFound)) {
 			if (event.getEntity() instanceof Player) {
 				final Player victim = (Player) event.getEntity();
+				Player killer = null;
 				
-				if (victim.getHealth() - event.getDamage() > 0 || victim.getHealth() <= 0) {
-					// cancel if the player did not die through this event
-					return;
+				if (recentlyAttackedPlayers.get(victim) - System.currentTimeMillis() <= MAX_DELAY && lastAttackByOtherPlayer.get(victim) != null && lastAttackByOtherPlayer.get(victim)) {
+					killer = lastAttacker.get(victim);
 				}
-				
-				final Entity killer = ((EntityDamageByEntityEvent)event).getDamager();
-				
+					
 				if (permissionsFound) {
 					final PermissionHandler ph = plugin.getPermissionsHandler();
 					
@@ -105,7 +112,38 @@ public final class DPEntityListener extends EntityListener {
 					useBOSEconomy(victim, killer);
 				}
 			}
-		}
+		}		
+	}
+	
+	/**
+	 * Determines the last damage source of the victim.
+	 * 
+	 * Since onEntityDeath does not provide a getDamager() or getKiller() method, we have to
+	 * determine it this way.
+	 * 
+	 * @param event event information passed by Bukkit
+	 */
+	public void onEntityDamage(EntityDamageEvent event) {
+		if (event != null && !event.isCancelled() && (event instanceof EntityDamageByEntityEvent)) {
+			final EntityDamageByEntityEvent temp = (EntityDamageByEntityEvent) event;
+			
+			if (!(temp.getEntity() instanceof Player)) {
+				return;
+			}
+			
+			final Player victim = (Player) temp.getEntity();
+			
+			recentlyAttackedPlayers.put(victim, System.currentTimeMillis());
+			
+			if (temp.getDamager() instanceof Player) {
+				final Player killer = (Player) temp.getDamager();
+				
+				lastAttackByOtherPlayer.put(victim, true);
+				lastAttacker.put(victim, killer);
+			} else {
+				lastAttackByOtherPlayer.put(victim, false);
+			}
+ 		}
 	}
 	
 	private String replaceAllTags(double dif) {		
@@ -127,7 +165,7 @@ public final class DPEntityListener extends EntityListener {
 		return tmp;
 	}
 	
-	private void useIConomy(Player victim, Entity killer) {
+	private void useIConomy(Player victim, Player killer) {
 		String playerName = victim.getName();
 		
 		Account account = iConomy.getAccount(playerName);
@@ -163,16 +201,15 @@ public final class DPEntityListener extends EntityListener {
 			
 			double dif = before - balance.balance();
 			
-			if (config.getGiveMoneyToKiller() && killer instanceof Player) {
+			if (config.getGiveMoneyToKiller() && killer != null && killer instanceof Player) {
 				if (!killer.equals(victim)) {
-					Player p = (Player) killer;
 					// determine currency name
 					String currency = "";
 					String five = iConomy.format(5.0);
 					currency = five.substring(five.indexOf(" ") + 1);
 						
-					iConomy.getAccount(p.getName()).getHoldings().add(dif);
-					p.sendMessage(ChatColor.GREEN + "You killed " + playerName + " and received " + dif + " " + currency);
+					iConomy.getAccount(killer.getName()).getHoldings().add(dif);
+					killer.sendMessage(ChatColor.GREEN + "You killed " + playerName + " and received " + dif + " " + currency);
 				}
 			}
 			
@@ -189,7 +226,7 @@ public final class DPEntityListener extends EntityListener {
 		}
 	}
 	
-	private void useBOSEconomy(Player victim, Entity killer) {
+	private void useBOSEconomy(Player victim, Player killer) {
 		String playerName = victim.getName();
 		
 		BOSEconomy bos = plugin.getBOSEconomyPlugin();
@@ -224,11 +261,10 @@ public final class DPEntityListener extends EntityListener {
 			
 			double dif = before - bos.getPlayerMoney(playerName);
 			
-			if (config.getGiveMoneyToKiller() && killer instanceof Player) {
+			if (config.getGiveMoneyToKiller() && killer != null && killer instanceof Player) {
 				if (!killer.equals(victim)) {
-					Player p = (Player) killer;
-					bos.addPlayerMoney(p.getName(), (int) dif, false);
-					p.sendMessage(ChatColor.GREEN + "You killed " + playerName + " and received " + dif + " " + bos.getMoneyNamePlural());
+					bos.addPlayerMoney(killer.getName(), (int) dif, false);
+					killer.sendMessage(ChatColor.GREEN + "You killed " + playerName + " and received " + dif + " " + bos.getMoneyNamePlural());
 				}
 			}
 			

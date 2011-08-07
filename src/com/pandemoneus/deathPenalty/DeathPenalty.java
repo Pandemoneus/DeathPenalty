@@ -76,6 +76,7 @@ public class DeathPenalty extends JavaPlugin {
 
 		PluginManager pm = getServer().getPluginManager();
 
+		pm.registerEvent(Event.Type.ENTITY_DEATH, entityListener, Priority.Highest, this);
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Priority.Highest, this);
 	}
 

@@ -1,3 +1,6 @@
+Version 1.053
+- Attempt to fix multiple subtractions
+
 Version 1.052
 - Killer should really receive money now
 
