@@ -109,7 +109,11 @@ public final class DPEntityListener extends EntityListener {
 		}		
 	}
 	
-	private String replaceAllTags(double dif) {		
+	private String replaceAllTags(double dif, String msg, String victimName, String killerName) {
+		if (msg == null || msg.equals("") || victimName == null || killerName == null) {
+			return "";
+		}
+		
 		// determine currency name
 		String currency = "";
 		if (iConomyFound) {
@@ -120,16 +124,27 @@ public final class DPEntityListener extends EntityListener {
 		}
 		
 		// replace tags one by one
-		String tmp = config.getMsgLostMoney();
+		String tmp = msg.trim();
 		tmp = DPConfig.replaceTags(tmp, "Money", "" + dif);
 		tmp = DPConfig.replaceTags(tmp, "Percentage", "" + config.getPenaltyMoneyInPercent());
 		tmp = DPConfig.replaceTags(tmp, "Currency", currency);
+		tmp = DPConfig.replaceTags(tmp, "Victim", victimName);
+		tmp = DPConfig.replaceTags(tmp, "Killer", killerName);
 		
 		return tmp;
 	}
 	
 	private void useIConomy(Player victim, Player killer) {
+		if (victim == null) {
+			return;
+		}
+		
 		String playerName = victim.getName();
+		String killerName = "";
+		
+		if (killer != null) {
+			killerName = killer.getName();
+		}
 		
 		Account account = iConomy.getAccount(playerName);
 		Holdings balance = account.getHoldings();
@@ -164,33 +179,37 @@ public final class DPEntityListener extends EntityListener {
 			
 			double dif = before - balance.balance();
 			
-			if (config.getGiveMoneyToKiller() && killer != null && killer instanceof Player) {
+			if (config.getGiveMoneyToKiller() && killer != null) {
 				if (!killer.equals(victim)) {
-					// determine currency name
-					String currency = "";
-					String five = iConomy.format(5.0);
-					currency = five.substring(five.indexOf(" ") + 1);
-						
 					iConomy.getAccount(killer.getName()).getHoldings().add(dif);
-					killer.sendMessage(ChatColor.GREEN + "You killed " + playerName + " and received " + dif + " " + currency);
+					killer.sendMessage(ChatColor.GREEN + replaceAllTags(dif, config.getMsgKillerReceivedMoney(), victim.getName(), killerName));
 				}
 			}
 			
-			msg = ChatColor.RED + replaceAllTags(dif);
+			msg = ChatColor.RED + replaceAllTags(dif, config.getMsgLostMoney(), victim.getName(), killerName);
 		} else {
 			// player does not have enough money
-			msg = ChatColor.GOLD + config.getMsgNotEnoughMoney();
+			msg = ChatColor.GOLD + replaceAllTags(0.0, config.getMsgNotEnoughMoney(), victim.getName(), killerName);
 		}
 	
 	
 		// finally, show the message
 		if (config.getShowMsgOnDeath()) {
-			victim.sendMessage(ChatColor.RED + msg);
+			victim.sendMessage(msg);
 		}
 	}
 	
 	private void useBOSEconomy(Player victim, Player killer) {
+		if (victim == null) {
+			return;
+		}
+		
 		String playerName = victim.getName();
+		String killerName = "";
+		
+		if (killer != null) {
+			killerName = killer.getName();
+		}
 		
 		BOSEconomy bos = plugin.getBOSEconomyPlugin();
 		int playerMoney = bos.getPlayerMoney(playerName);
@@ -224,23 +243,23 @@ public final class DPEntityListener extends EntityListener {
 			
 			double dif = before - bos.getPlayerMoney(playerName);
 			
-			if (config.getGiveMoneyToKiller() && killer != null && killer instanceof Player) {
+			if (config.getGiveMoneyToKiller() && killer != null) {
 				if (!killer.equals(victim)) {
 					bos.addPlayerMoney(killer.getName(), (int) dif, false);
-					killer.sendMessage(ChatColor.GREEN + "You killed " + playerName + " and received " + dif + " " + bos.getMoneyNamePlural());
+					killer.sendMessage(ChatColor.GREEN + replaceAllTags(dif, config.getMsgKillerReceivedMoney(), victim.getName(), killerName));
 				}
 			}
 			
-			msg = ChatColor.RED + replaceAllTags(dif);
+			msg = ChatColor.RED + replaceAllTags(dif, config.getMsgLostMoney(), victim.getName(), killerName);
 		} else {
 			// player does not have enough money
-			msg = ChatColor.GOLD + config.getMsgNotEnoughMoney();
+			msg = ChatColor.GOLD + replaceAllTags(0.0, config.getMsgNotEnoughMoney(), victim.getName(), killerName);
 		}
 	
 	
 		// finally, show the message
 		if (config.getShowMsgOnDeath()) {
-			victim.sendMessage(ChatColor.RED + msg);
+			victim.sendMessage(msg);
 		}
 		
 	}

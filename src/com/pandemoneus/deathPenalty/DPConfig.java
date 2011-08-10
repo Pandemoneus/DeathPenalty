@@ -39,7 +39,8 @@ public final class DPConfig {
 	private boolean noPenaltyInWorldGuardRegions = false;
 	private boolean showMsgOnDeath = true;
 	private String msgNotEnoughMoney = "Lucky you! You didn't lose any money.";
-	private String msgLostMoney = "You lost <Money>!";
+	private String msgLostMoney = "You lost <Money> <Currency>!";
+	private String msgKillerReceivedMoney = "You killed <Victim> and received <Money> <Currency>.";
 	private boolean giveMoneyToKiller = false;
 	
 
@@ -107,6 +108,7 @@ public final class DPConfig {
 		msgNotEnoughMoney = bukkitConfig.getString("Penalty.Messages.NotEnoughMoney", "Lucky you! You didn't lose any money.");
 		msgLostMoney = bukkitConfig.getString("Penalty.Messages.LostMoney", "You lost <Money> <Currency>!");
 		giveMoneyToKiller = bukkitConfig.getBoolean("Penalty.PVP.GiveMoneyToKiller", false);
+		msgKillerReceivedMoney = bukkitConfig.getString("Penalty.Messages.KillerReceivedMoney", "You killed <Victim> and received <Money> <Currency>.");
 	}
 
 	private void writeDefault() {
@@ -122,8 +124,9 @@ public final class DPConfig {
 		write("Penalty.Messages.ShowMsgOnDeath", showMsgOnDeath);
 		write("Penalty.Messages.NotEnoughMoney", msgNotEnoughMoney);
 		write("Penalty.Messages.LostMoney", msgLostMoney);
+		write("Penalty.Messages.KillerReceivedMoney", msgKillerReceivedMoney);
 		write("Penalty.PVP.GiveMoneyToKiller", giveMoneyToKiller);
-
+		
 		loadData();
 	}
 
@@ -251,6 +254,15 @@ public final class DPConfig {
 	 */
 	public boolean getGiveMoneyToKiller() {
 		return giveMoneyToKiller;
+	}
+	
+	/**
+	 * Returns the message that appears to the killer when a player dies and loses money.
+	 * 
+	 * @return the message that appears to the killer when a player dies and loses money
+	 */
+	public String getMsgKillerReceivedMoney() {
+		return msgKillerReceivedMoney;
 	}
 
 	/**
