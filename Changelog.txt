@@ -1,5 +1,8 @@
+Version 1.054
+- Slight restructuring of code which should also fix a NullPointerException
+
 Version 1.053
-- Attempt to fix multiple subtractions
+- Attempt to fix multiple subtractions and loss of money although the player did not die
 
 Version 1.052
 - Killer should really receive money now

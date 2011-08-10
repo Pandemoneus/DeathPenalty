@@ -1,11 +1,9 @@
 package com.pandemoneus.deathPenalty;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
@@ -36,14 +34,6 @@ public final class DPEntityListener extends EntityListener {
 	private boolean bosEconomyFound = false;
 	private boolean worldGuardFound = false;
 	private boolean permissionsFound = false;
-	
-	// HashMaps used to determine who killed a player and when
-	private HashMap<Player, Long> recentlyAttackedPlayers = new HashMap<Player, Long>();
-	private HashMap<Player, Boolean> lastAttackByOtherPlayer = new HashMap<Player, Boolean>();
-	private HashMap<Player, Player> lastAttacker = new HashMap<Player, Player>();
-	
-	// maximum delay between a recorded player damage and this player's death
-	private final static long MAX_DELAY = 3000;
 	
 	/**
 	 * Associates this object with a plugin.
@@ -78,8 +68,12 @@ public final class DPEntityListener extends EntityListener {
 				final Player victim = (Player) event.getEntity();
 				Player killer = null;
 				
-				if (recentlyAttackedPlayers.get(victim) - System.currentTimeMillis() <= MAX_DELAY && lastAttackByOtherPlayer.get(victim) != null && lastAttackByOtherPlayer.get(victim)) {
-					killer = lastAttacker.get(victim);
+				if (event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent) {
+					EntityDamageByEntityEvent nEvent = (EntityDamageByEntityEvent) event.getEntity().getLastDamageCause();
+					
+					if (nEvent.getDamager() instanceof Player) {
+						killer = (Player) nEvent.getDamager();
+					}
 				}
 					
 				if (permissionsFound) {
@@ -113,37 +107,6 @@ public final class DPEntityListener extends EntityListener {
 				}
 			}
 		}		
-	}
-	
-	/**
-	 * Determines the last damage source of the victim.
-	 * 
-	 * Since onEntityDeath does not provide a getDamager() or getKiller() method, we have to
-	 * determine it this way.
-	 * 
-	 * @param event event information passed by Bukkit
-	 */
-	public void onEntityDamage(EntityDamageEvent event) {
-		if (event != null && !event.isCancelled() && (event instanceof EntityDamageByEntityEvent)) {
-			final EntityDamageByEntityEvent temp = (EntityDamageByEntityEvent) event;
-			
-			if (!(temp.getEntity() instanceof Player)) {
-				return;
-			}
-			
-			final Player victim = (Player) temp.getEntity();
-			
-			recentlyAttackedPlayers.put(victim, System.currentTimeMillis());
-			
-			if (temp.getDamager() instanceof Player) {
-				final Player killer = (Player) temp.getDamager();
-				
-				lastAttackByOtherPlayer.put(victim, true);
-				lastAttacker.put(victim, killer);
-			} else {
-				lastAttackByOtherPlayer.put(victim, false);
-			}
- 		}
 	}
 	
 	private String replaceAllTags(double dif) {		
