@@ -1,4 +1,4 @@
-DeathPenalty plugin v1.06		
+DeathPenalty plugin v1.07		
 by Pandemoneus		
 https://github.com/Pandemoneus
 
@@ -45,3 +45,26 @@ deathpenalty.losemoney //players with this permission lose money on death
 deathpenalty.help //makes the help command available		
 deathpenalty.config.reload //makes the reload command available		
 deathpenalty.config.info //makes the info command available
+
+PermissionBukkit nodes:
+-----------------------
+`deathpenalty.admin:`		
+    description: Quick node for administrators, disables money loss and enables configuration nodes		
+`deathpenalty.player:`		
+    description: Quick node for players, enables money loss and disables configuration nodes and help	
+`deathpenalty.*:`		
+    description: Gives access to everything that the plug-in offers		
+`deathpenalty.config.*:`		
+    description: Gives access to configuration reloading and displaying it in-game		
+`deathpenalty.losemoney:`		
+    description: Players with this permission lose money on death		
+    default: not op		
+`deathpenalty.help:`		
+    description: Allows you to display the commands in-game		
+    default: op		
+`deathpenalty.config.info:`		
+    description: Displays the currently loaded configuration		
+    default: op		
+`deathpenalty.config.reload:`		
+    description: Reloads the configuration in-game		
+    default: op		

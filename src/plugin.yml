@@ -1,6 +1,6 @@
 name: DeathPenalty
 main: com.pandemoneus.deathPenalty.DeathPenalty
-version: '1.06'
+version: '1.07'
 author: 'Pandemoneus'
 
 commands:
@@ -12,3 +12,38 @@ commands:
         description: DeathPenalty
         usage: |
                /<command>
+               
+permissions:
+    deathpenalty.*:
+        description: Gives access to everything that the plug-in offers
+        children:
+            deathpenalty.losemoney: true
+            deathpenalty.help: true
+            deathpenalty.config.*: true
+    deathpenalty.config.*:
+        description: Gives access to configuration reloading and displaying it in-game
+        children:
+            deathpenalty.config.info: true
+            deathpenalty.config.reload: true
+    deathpenalty.losemoney:
+        description: Players with this permission lose money on death
+        default: not op
+    deathpenalty.help:
+        description: Allows you to display the commands in-game
+        default: op
+    deathpenalty.config.info:
+        description: Displays the currently loaded configuration
+        default: op
+    deathpenalty.config.reload:
+        description: Reloads the configuration in-game
+        default: op
+    deathpenalty.admin:
+        description: Quick node for administrators, disables money loss and enables configuration nodes
+        children:
+            deathpenalty.losemoney: false
+            deathpenalty.help: true
+            deathpenalty.config.*: true
+    deathpenalty.player:
+        description: Quick node for players, enables money loss and disables configuration nodes and help
+        children:
+            deathpenalty.admin: false

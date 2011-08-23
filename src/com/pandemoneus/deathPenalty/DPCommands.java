@@ -21,6 +21,9 @@ public final class DPCommands implements CommandExecutor {
 
 	private DeathPenalty plugin;
 	private static String pluginName;
+	
+	private boolean permissionsFound = false;
+	private PermissionHandler ph = null;
 
 	/**
 	 * Associates this object with a plugin
@@ -31,6 +34,9 @@ public final class DPCommands implements CommandExecutor {
 	public DPCommands(DeathPenalty plugin) {
 		this.plugin = plugin;
 		pluginName = DeathPenalty.getPluginName();
+		
+		permissionsFound = plugin.getPermissionsFound();
+		ph = plugin.getPermissionsHandler();
 	}
 
 	/**
@@ -41,12 +47,7 @@ public final class DPCommands implements CommandExecutor {
 			String commandLabel, String[] args) {
 		if (args != null) {
 			if (sender instanceof Player) {
-				if (plugin.getPermissionsFound()) {
-					usePermissionsStructure((Player) sender, cmd, commandLabel,
-							args);
-				} else {
-					useNormalStructure((Player) sender, cmd, commandLabel, args);
-				}
+				determineCommand((Player) sender, cmd, commandLabel, args);
 			} else {
 				sender.sendMessage(ChatColor.RED
 						+ "Sorry, you are not a player!");
@@ -56,13 +57,11 @@ public final class DPCommands implements CommandExecutor {
 		return true;
 	}
 
-	private void usePermissionsStructure(Player sender, Command cmd,
+	private void determineCommand(Player sender, Command cmd,
 			String commandLabel, String[] args) {
-		PermissionHandler ph = plugin.getPermissionsHandler();
-
 		if (args.length == 0) {
 			// show help
-			if (ph.has(sender, pluginName.toLowerCase() + ".help")) {
+			if (hasPerm(sender, ".help")) {
 				showHelp(sender);
 			} else {
 				sender.sendMessage(ChatColor.RED
@@ -74,7 +73,7 @@ public final class DPCommands implements CommandExecutor {
 
 			if (command.equalsIgnoreCase("reload")) {
 				// reload
-				if (ph.has(sender, pluginName.toLowerCase() + ".config.reload")) {
+				if (hasPerm(sender, ".config.reload")) {
 					reloadPlugin(sender);
 				} else {
 					sender.sendMessage(ChatColor.RED
@@ -82,7 +81,7 @@ public final class DPCommands implements CommandExecutor {
 				}
 			} else if (command.equalsIgnoreCase("info")) {
 				// info
-				if (ph.has(sender, pluginName.toLowerCase() + ".config.info")) {
+				if (hasPerm(sender, ".config.info")) {
 					getConfigInfo(sender);
 				} else {
 					sender.sendMessage(ChatColor.RED
@@ -91,29 +90,10 @@ public final class DPCommands implements CommandExecutor {
 			}
 		}
 	}
+	
+	private boolean hasPerm(Player sender, String perm) {
+		return (permissionsFound && ph.has(sender, pluginName.toLowerCase() + perm)) || (sender.hasPermission(pluginName.toLowerCase() + perm));
 
-	private void useNormalStructure(Player sender, Command cmd,
-			String commandLabel, String[] args) {
-		if (sender.isOp()) {
-			if (args.length == 0) {
-				// show help
-				showHelp(sender);
-			} else if (args.length == 1) {
-				// commands with 0 arguments
-				String command = args[0];
-
-				if (command.equalsIgnoreCase("reload")) {
-					// reload
-					reloadPlugin(sender);
-				} else if (command.equalsIgnoreCase("info")) {
-					// info
-					getConfigInfo(sender);
-				}
-			}
-		} else {
-			sender.sendMessage(ChatColor.RED
-					+ "You are not authorized to use this command.");
-		}
 	}
 
 	private void showHelp(Player sender) {

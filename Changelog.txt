@@ -1,3 +1,6 @@
+Version 1.07
+- Added PermissionBukkit support
+
 Version 1.06
 - Added customizable version for the killer message
 - Added new tag <Victim> to display the victim's name
