@@ -123,9 +123,12 @@ public final class DPEntityListener extends EntityListener {
 			currency = plugin.getBOSEconomyPlugin().getMoneyNamePlural();
 		}
 		
+		StringBuilder difference = new StringBuilder("").append(dif);
+		difference.delete(difference.indexOf(".", 0) + 3, difference.length());
+		
 		// replace tags one by one
 		String tmp = msg.trim();
-		tmp = DPConfig.replaceTags(tmp, "Money", "" + dif);
+		tmp = DPConfig.replaceTags(tmp, "Money", "" + difference.toString());
 		tmp = DPConfig.replaceTags(tmp, "Percentage", "" + config.getPenaltyMoneyInPercent());
 		tmp = DPConfig.replaceTags(tmp, "Currency", currency);
 		tmp = DPConfig.replaceTags(tmp, "Victim", victimName);

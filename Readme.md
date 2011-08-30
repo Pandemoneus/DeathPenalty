@@ -1,4 +1,4 @@
-DeathPenalty plugin v1.07		
+DeathPenalty plugin v1.08		
 by Pandemoneus		
 https://github.com/Pandemoneus
 

@@ -1,3 +1,6 @@
+Version 1.08
+- Penalty money is now cut off after the second decimal
+
 Version 1.07
 - Added PermissionBukkit support
 
