@@ -124,7 +124,11 @@ public final class DPEntityListener extends EntityListener {
 		}
 		
 		StringBuilder difference = new StringBuilder("").append(dif);
-		difference.delete(difference.indexOf(".", 0) + 3, difference.length());
+		
+		int n = difference.indexOf(".", 0);
+		
+		if (n != -1 && n + 3 < difference.length())
+			difference.delete(n + 3, difference.length());
 		
 		// replace tags one by one
 		String tmp = msg.trim();
